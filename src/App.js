@@ -10,6 +10,7 @@ class App extends Component {
   state = {
     value: '',
     images: [],
+    page: 1,
   };
 
   // setTopic = val => {
@@ -40,12 +41,13 @@ class App extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
+    const { value, page } = this.state;
     // this.setState({ isLoading: true });
 
-    fetchImage(this.state.value, '1').then(res =>
+    fetchImage(value, page).then(res =>
       this.setState({ images: [...prevState.images, ...res.hits] }),
     );
-    console.log(this.state.images); // .catch(error => this.setState({ error }))
+    // .catch(error => this.setState({ error }))
     // .finally(() => this.setState({ isLoading: false }));
   }
 
