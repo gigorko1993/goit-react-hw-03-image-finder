@@ -2,17 +2,30 @@ import React, { Component } from 'react';
 
 import Searchbar from './Components/Searchbar';
 import fetchImage from './Components/api';
-// import ImageGallery from './Components/ImageGallery';
+import ImageGallery from './Components/ImageGallery';
 import s from './App.module.css';
 console.log(s);
 
 class App extends Component {
   state = {
     value: '',
-    image: [],
+    images: [],
   };
 
-  setVal(val) {
+  // setTopic = val => {
+  //   this.setState(prevState => {
+  //     if (prevState.topic === val.toLowerCase()) {
+  //       toast.dark('The same request! Try something another :)', {
+  //         toastId: 'customId',
+  //       });
+  //       return;
+  //     }
+
+  //     return { topic: val.toLowerCase(), page: 1 };
+  //   });
+  // };
+
+  setVal = val => {
     this.setState(prevState => {
       if (prevState.value === val.toLowerCase()) {
         alert('The same request! Try something another :)');
@@ -21,18 +34,18 @@ class App extends Component {
 
       return { value: val.toLowerCase() };
     });
-  }
+  };
   openModal() {
     console.log('ff');
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(prevProps, prevState) {
     // this.setState({ isLoading: true });
 
-    fetchImage('react', '1').then(res =>
+    fetchImage(this.state.value, '1').then(res =>
       this.setState({ images: [...prevState.images, ...res.hits] }),
     );
-    console.log(this.state.image); // .catch(error => this.setState({ error }))
+    console.log(this.state.images); // .catch(error => this.setState({ error }))
     // .finally(() => this.setState({ isLoading: false }));
   }
 
@@ -40,8 +53,11 @@ class App extends Component {
     fetchImage();
     return (
       <>
-        <Searchbar onSubmit={this.setVal} />
-        {/* <ImageGallery images={this.state.image} onImageClick={this.openModal} /> */}
+        <Searchbar setVal={this.setVal} />
+        <ImageGallery
+          images={this.state.images}
+          onImageClick={this.openModal}
+        />
       </>
     );
   }
