@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import s from './Searchbar.module.css';
-console.log(s);
+import styles from './Searchbar.module.css';
 
-class Searchbar extends Component {
+export default class Searchbar extends Component {
   state = {
     value: '',
   };
@@ -11,7 +10,7 @@ class Searchbar extends Component {
     e.preventDefault();
 
     if (this.state.value.trim() !== '') {
-      this.props.setVal(this.state.value);
+      this.props.onClick(this.state.value);
       this.setState({ value: '' });
     }
   };
@@ -22,16 +21,17 @@ class Searchbar extends Component {
 
   render() {
     const { value } = this.state;
+
     return (
-      <header className={s.Searchbar}>
-        <form className={s.SearchForm} onSubmit={this.onSubmit}>
-          <button type="submit" className={s.button}>
-            <span className={s.buttonLabel}>Search</span>
+      <header className={styles.Searchbar}>
+        <form className={styles.SearchForm} onSubmit={this.onSubmit}>
+          <button type="submit" className={styles.button}>
+            <span className={styles.buttonLabel}>Search</span>
           </button>
 
           <input
             onChange={this.onChange}
-            className={s.SearchFormInput}
+            className={styles.SearchFormInput}
             type="text"
             autoComplete="off"
             autoFocus
@@ -43,5 +43,3 @@ class Searchbar extends Component {
     );
   }
 }
-
-export default Searchbar;
