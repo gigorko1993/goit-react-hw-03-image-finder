@@ -96,12 +96,7 @@ class App extends Component {
       <div>
         <Searchbar onClick={this.setValue} />
 
-        {status === 'idle' ? (
-          <h2>
-            Use the search bar above if you are looking to get an awesome
-            wallpaper
-          </h2>
-        ) : null}
+        {status === 'idle' ? <h2>Input your query to find images</h2> : null}
         {status === 'resolved' ? (
           <>
             <ImageGallery images={images} onImgClick={this.onImgClick} />
@@ -111,14 +106,14 @@ class App extends Component {
         {loader && (
           <Loader
             className="Loader"
-            type="Grid"
+            type="Oval"
             color="#9900cc"
             height={180}
             width={180}
           />
         )}
         {status === 'rejected' ? (
-          <h2>Some error occured while fetching requested images</h2>
+          <h2>Error. Try to change your query</h2>
         ) : null}
         {showModal && (
           <Modal showModal={this.showModal}>
