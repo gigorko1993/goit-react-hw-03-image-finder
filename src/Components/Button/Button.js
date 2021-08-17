@@ -1,12 +1,10 @@
+import React from 'react';
 import s from './Button.module.css';
 
-const Button = ({ onClick }) => {
+export default function Button({ onClick }) {
   return (
-    // onClick={() => onClick()}
-    <Button type="button" className={s.Button} onClick={onClick}>
+    <button type="button" onClick={() => onClick()} className={s.Button}>
       Load more
-    </Button>
+    </button>
   );
-};
-
-export default Button;
+}

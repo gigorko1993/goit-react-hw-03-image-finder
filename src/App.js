@@ -1,22 +1,25 @@
 import React, { Component } from 'react';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
-import { fetchImages } from './Components/api';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-import Loader from 'react-loader-spinner';
 import Searchbar from './Components/Searchbar';
 import ImageGallery from './Components/ImageGallery';
-import Button from './Components/Button';
 import Modal from './Components/Modal';
+import Loader from 'react-loader-spinner';
+import Button from './Components/Button';
+
+import s from './App.module.css';
+
+import { fetchImages } from './Components/api';
 
 class App extends Component {
   state = {
-    status: 'idle',
     value: '',
-    loader: false,
     page: 1,
     images: [],
+    status: 'idle',
+    loader: false,
     showModal: false,
     modalContent: null,
   };
@@ -31,15 +34,15 @@ class App extends Component {
       this.setState({ loader: true });
 
       fetchImages(page, value)
-        .then(data => {
-          if (data.hits.length < 12) {
-            toast.warn('No more images to load', {
+        .then(res => {
+          if (res.hits.length < 12) {
+            toast.warn('All images are loaded', {
               toastId: 'anotherCustomId',
             });
           }
 
           this.setState(prevState => ({
-            images: [...prevState.images, ...data.hits],
+            images: [...prevState.images, ...res.hits],
             status: 'resolved',
           }));
         })
@@ -57,19 +60,14 @@ class App extends Component {
   setValue = val => {
     this.setState(prevState => {
       if (prevState.value === val.toLowerCase()) {
-        toast.dark('The same request! Try something another :)', {
+        alert('alert');
+        toast.dark('Try to change your input :)', {
           toastId: 'customId',
         });
         return;
       }
 
       return { value: val.toLowerCase(), page: 1 };
-    });
-  };
-
-  showModal = () => {
-    this.setState(prevState => {
-      return { showModal: !prevState.showModal };
     });
   };
 
@@ -83,23 +81,31 @@ class App extends Component {
     });
   };
 
-  onImgClick = id => {
-    const modalImg = this.state.images.find(img => img.id === id);
+  showModal = () => {
+    this.setState(prevState => {
+      return { showModal: !prevState.showModal };
+    });
+  };
+
+  onImageClick = id => {
+    const modalImg = this.state.images.find(el => el.id === id);
     this.setState({ modalContent: modalImg });
     this.showModal();
   };
 
   render() {
-    const { status, showModal, images, loader, modalContent } = this.state;
+    const { images, loader, status, showModal, modalContent } = this.state;
 
     return (
       <div>
-        <Searchbar onClick={this.setValue} />
+        <Searchbar setValue={this.setValue} />
 
-        {status === 'idle' ? <h2>Input your query to find images</h2> : null}
+        {status === 'idle' ? (
+          <h2 className={s.title}>Input your query to find images</h2>
+        ) : null}
         {status === 'resolved' ? (
           <>
-            <ImageGallery images={images} onImgClick={this.onImgClick} />
+            <ImageGallery images={images} onImageClick={this.onImageClick} />
             <Button onClick={this.setPage} />
           </>
         ) : null}
@@ -113,7 +119,7 @@ class App extends Component {
           />
         )}
         {status === 'rejected' ? (
-          <h2>Error. Try to change your query</h2>
+          <h2 className={s.title}>Error. Try to change your query</h2>
         ) : null}
         {showModal && (
           <Modal showModal={this.showModal}>

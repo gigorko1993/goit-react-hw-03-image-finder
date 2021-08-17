@@ -1,3 +1,4 @@
+import React from 'react';
 import s from './ImageGalleryItem.module.css';
 
 const ImageGalleryItem = ({ images, onImageClick }) => {
@@ -8,7 +9,7 @@ const ImageGalleryItem = ({ images, onImageClick }) => {
         key={id}
         onClick={() => onImageClick(id)}
       >
-        <img className={s.img} src={webformatURL} alt={tags} />
+        <img className={s.image} src={webformatURL} alt={tags} />
       </li>
     );
   });

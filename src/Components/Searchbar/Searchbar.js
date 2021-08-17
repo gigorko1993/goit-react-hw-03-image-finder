@@ -10,7 +10,7 @@ export default class Searchbar extends Component {
     e.preventDefault();
 
     if (this.state.value.trim() !== '') {
-      this.props.onClick(this.state.value);
+      this.props.setValue(this.state.value);
       this.setState({ value: '' });
     }
   };
@@ -20,23 +20,20 @@ export default class Searchbar extends Component {
   };
 
   render() {
-    const { value } = this.state;
-
     return (
       <header className={styles.Searchbar}>
-        <form className={styles.SearchForm} onSubmit={this.onSubmit}>
-          <button type="submit" className={styles.button}>
-            <span className={styles.buttonLabel}>Search</span>
+        <form onSubmit={this.onSubmit}>
+          <button type="submit">
+            <span>Search</span>
           </button>
 
           <input
             onChange={this.onChange}
-            className={styles.SearchFormInput}
             type="text"
             autoComplete="off"
             autoFocus
             placeholder="Search images and photos"
-            value={value}
+            value={this.state.value}
           />
         </form>
       </header>
